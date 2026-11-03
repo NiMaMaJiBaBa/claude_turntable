@@ -1,0 +1,13 @@
+{
+  "name": "fortune-wheel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "零依賴的命運大轉盤，支援加權抽籤、分享與離線使用。",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test tests/core.test.js",
+    "build": "node scripts/build.js"
+  }
+}

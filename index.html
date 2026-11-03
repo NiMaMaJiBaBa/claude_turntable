@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f2eb">
+  <title>命運大轉盤 — 讓選擇變得有趣</title>
+  <meta name="description" content="免費、私密的隨機抽籤轉盤。自訂選項與權重、抽籤紀錄、分享連結，支援離線使用。今天的選擇，交給命運。">
+  <meta property="og:title" content="命運大轉盤"><meta property="og:description" content="今天的選擇，交給命運。自訂選項、加權抽籤與分享。"><meta property="og:type" content="website">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="header"><a class="brand" href="./"><span class="brand-icon">✳</span> 命運大轉盤 <span class="brand-en">LUCKY SPIN</span></a><div class="header-actions"><span class="privacy">◉ 無帳號・資料只存在你的裝置</span><button id="fullscreen" class="icon-btn" title="全螢幕" aria-label="全螢幕">⛶</button><button id="theme" class="icon-btn" title="切換主題" aria-label="切換主題">◐</button></div></header>
+  <main>
+    <section class="intro"><div><p class="eyebrow">A LITTLE CHANCE. A LOT OF POSSIBILITY.</p><h1>選擇困難？<span>讓命運轉個彎。</span></h1><p class="subtitle">午餐吃什麼、誰先開始，還是下一場冒險？轉一下就知道。</p></div><div class="intro-note"><span>✧</span> 每個選擇，<br>都有被選中的可能。</div></section>
+    <div class="workspace">
+      <section class="wheel-panel" aria-label="抽籤轉盤">
+        <div class="wheel-heading"><span class="section-label">YOUR WHEEL</span><button id="share" class="text-btn">↗ 分享轉盤</button></div>
+        <input id="title" class="wheel-title" aria-label="轉盤標題" maxlength="60" value="今天吃什麼？">
+        <p id="wheel-meta" class="wheel-meta"></p>
+        <div class="wheel-stage"><div class="wheel-rim"><canvas id="wheel" role="img" aria-label="抽籤轉盤，各選項詳見右側清單"></canvas><div id="pointer" class="pointer" aria-hidden="true"></div><button id="hub" class="hub" aria-label="轉動轉盤"><span>✳</span></button></div></div>
+        <button id="spin" class="spin-btn">轉動命運 <span>↗</span></button><p id="spin-hint" class="keyboard-hint">也可以按 <kbd>Space</kbd> 或點擊轉盤中央</p>
+        <div class="wheel-foot"><span>✧ Web Crypto 隨機抽籤</span><span>每次轉動，都是新的可能</span></div>
+      </section>
+      <aside class="side-panel">
+        <div class="tabs" role="tablist" aria-label="轉盤管理"><button id="tab-options" role="tab" aria-selected="true" aria-controls="options-panel">選項 <span id="count"></span></button><button id="tab-history" role="tab" aria-selected="false" aria-controls="history-panel" tabindex="-1">抽籤紀錄 <span id="history-count"></span></button></div>
+        <section id="options-panel" role="tabpanel" aria-labelledby="tab-options">
+          <fieldset id="editor"><legend class="sr-only">選項管理</legend><div class="panel-heading"><div><h2>把可能性放進來</h2><p>每行一個選項，或直接編輯下方清單。</p></div><span class="small-tag">最多 100 項</span></div>
+          <form id="add-form"><label class="sr-only" for="new-options">新增選項，每行一個</label><textarea id="new-options" rows="2" placeholder="輸入選項，例如：牛肉麵&#10;也可以一次貼上多行" maxlength="10000"></textarea><button type="submit" class="add-btn">＋ 加入選項</button></form>
+          <div class="list-toolbar"><span id="enabled-count"></span><div><button id="shuffle" class="text-btn">⤨ 打亂</button><button id="clear" class="text-btn danger">清空</button></div></div>
+          <div id="options-list" class="options-list"></div>
+          <div class="template-row"><span>沒有靈感？</span><select id="template" aria-label="載入範本"><option value="">挑一個範本 ↗</option value="food">今天吃什麼</option><option value="truth">真心話大冒險</option><option value="yesno">幫我做決定</option><option value="numbers">1–10 數字</option><option value="teams">組員分組</option></select><button id="reset" class="text-btn">還原</button></div>
+          <details class="settings"><summary>轉盤設定 <span>＋</span></summary><div class="settings-body"><label class="setting-row">抽中後排除 <input id="remove-winner" type="checkbox" role="switch"></label><p class="setting-help">適合點名、不重複抽獎，選項仍保留在清單。</p><label class="setting-row">播放音效 <input id="sound" type="checkbox" role="switch"></label><label class="setting-row">慶祝彩帶 <input id="confetti-toggle" type="checkbox" role="switch"></label><label class="setting-row" for="duration">旋轉時長 <output id="duration-value">5 秒</output></label><input id="duration" type="range" min="3" max="8" step="1"><p class="setting-help">選項右側數字為權重（1–100），扇形與機率依比例分配。</p><div class="data-buttons"><button id="export" class="text-btn">↓ 匯出 JSON</button><button id="import" class="text-btn">↑ 匯入 JSON</button><input id="import-file" type="file" accept="application/json,.json" hidden></div></div></details></fieldset>
+        </section>
+        <section id="history-panel" role="tabpanel" aria-labelledby="tab-history" hidden><div class="panel-heading"><div><h2>命運的足跡</h2><p>保留最近 100 次抽籤結果。</p></div></div><div class="history-tools"><button id="copy-history" class="text-btn">複製紀錄</button><button id="clear-history" class="text-btn danger">清空紀錄</button></div><ol id="history-list" class="history-list"></ol></section>
+      </aside>
+    </div>
+    <footer><span>MADE FOR THE UNDECIDED. <span class="footer-star">✳</span> 為每一個猶豫不決的你。</span><span>沒有追蹤，只有一點好運。</span></footer>
+  </main>
+  <dialog id="result-dialog"><form method="dialog"><button class="dialog-close icon-btn" aria-label="關閉結果">×</button></form><p class="eyebrow">THE UNIVERSE HAS SPOKEN</p><div class="result-icon">✧</div><h2>命運選中了</h2><p id="result-label" class="result-label"></p><p class="result-caption">就是它了，給這個選擇一個機會吧！</p><div class="dialog-actions"><button id="again" class="spin-btn">再轉一次 ↗</button><button id="copy-result" class="secondary-btn">複製結果</button></div></dialog>
+  <canvas id="confetti" aria-hidden="true"></canvas><div id="toast" role="status" aria-live="polite"></div><div id="announcement" class="sr-only" aria-live="polite"></div>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"命運大轉盤","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","inLanguage":"zh-TW","isAccessibleForFree":true,"description":"自訂選項、權重與分享連結的免費隨機抽籤轉盤。"}</script>
+  <script type="module" src="js/main.js"></script>
+</body></html>
